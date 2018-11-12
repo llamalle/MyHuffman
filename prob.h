@@ -1,0 +1,2 @@
+
+float* proba(char* txt ) ; 
