@@ -15,6 +15,7 @@ int main(int argc , char** argv){
 	}
 
 	codeChar('e' , arbre) ;
+	printf("%f",tailleMoyenne(arbre));
 	free(tabprob) ;
 
 	
