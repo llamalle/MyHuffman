@@ -2,14 +2,6 @@
 #include<stdlib.h>
 
 
-struct noeud{
-	char c ;
-	int pere ;
-	int fg ;
-	int fd ;
-	float prob ;
-} ;
-
 struct noeud* creerArbre(float *tab){
 
 	int i1 , i2 ;
