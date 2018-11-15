@@ -12,13 +12,13 @@ int main(int argc , char** argv){
 	struct noeud* arbre = creerArbre(tabprob) ;
 
 	printf("%d\n" , arbre[0].c);
-	for(int i=0 ; i<25 ; i++){
-		printf("%d. char = %c  pere = %i  filsdr = %i  filsga = %i  prob = %f \n" , i, arbre[i].c , arbre[i].pere , arbre[i].fd , arbre[i].fg , arbre[i].prob) ;
-	}
+//	for(int i=0 ; i<1 ; i++){
+//		printf("%d. char = %c  pere = %i  filsdr = %i  filsga = %i  prob = %f \n" , i, arbre[i].c , arbre[i].pere , arbre[i].fd , arbre[i].fg , arbre[i].prob) ;
+//	}
 
-	codeChar('e' , arbre) ;
+//	codeChar('e' , arbre) ;
 	printf("%f",tailleMoyenne(arbre));
-//	compression(argv[1] , arbre);
+	compression(argv[1] , arbre);
 	decompression(argv[2] , arbre , 3);
 	free(tabprob) ;
 

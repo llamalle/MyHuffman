@@ -37,10 +37,11 @@ void decompression(char* text , struct noeud* arbre , int cursComp){
 				d=noeudCourant.c;}
 			curs--;
 
+
 		}
 		
-		//	printf("jolie boucle\n");
-		fwrite(&(noeudCourant.c),sizeof(char),1,decomp);
+			printf("jolie boucle\n");
+		fwrite(&d,sizeof(char),1,decomp);
 	}
 	fclose(fichier);
 	fclose(decomp);

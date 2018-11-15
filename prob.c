@@ -13,7 +13,7 @@ float* proba(char* txt){
 
 	for(int i=0 ; i<256 ; i++)
 		T[i] = 0 ;
-	T[257] = '\0' ;
+	
 
 	a = fgetc(fichier) ; // a lit le fichier char par char
 

@@ -14,6 +14,7 @@ int compression(char* text , struct noeud* arbre){
 	int curs = 7 ; //curseur qui pointe ou doit etre ecrit l'octet
 	fichier=fopen(text , "r+");
 	if(fichier==NULL){ printf("fichier non ouvert\n"); return 1; }   //ajouter message d'erreur
+	int cursFinEcriture=0 ;
 
 	int a=0;
 	while(a != EOF){
@@ -32,6 +33,7 @@ int compression(char* text , struct noeud* arbre){
 				buffer |= (char)pow(2,curs);
 			}
 			curs-- ;
+			cursFinEcriture++ ;
 			printf("curs : %d\n" , curs);
 			i++ ;
 		}
@@ -39,6 +41,6 @@ int compression(char* text , struct noeud* arbre){
 	fwrite(&buffer,sizeof(char),1,file);
 	fclose(fichier);
 	fclose(file);
-	return curs ;
+	return cursFinEcriture ;
 }
 
