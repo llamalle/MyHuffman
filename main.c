@@ -4,6 +4,8 @@
 #include"creerArbre.h"
 #include"codeChar.h"
 #include"tailleMoyenne.h"
+#include"compression.h"
+#include"decompression.h"
 
 int main(int argc , char** argv){
 	float* tabprob = proba(argv[1]) ;
@@ -16,6 +18,8 @@ int main(int argc , char** argv){
 
 	codeChar('e' , arbre) ;
 	printf("%f",tailleMoyenne(arbre));
+//	compression(argv[1] , arbre);
+	decompression(argv[2] , arbre , 3);
 	free(tabprob) ;
 
 	

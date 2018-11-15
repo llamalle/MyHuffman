@@ -30,9 +30,7 @@ float* proba(char* txt){
 			printf("%c  %f\n" , e , T[j]); 
 	}
 	
-	return T ;
 	fclose(fichier);
-
-	return 0 ;
+	return T ;
 
 }
