@@ -13,7 +13,7 @@ struct noeud* creerArbre(float *tab){
 		if(tab[i] !=0) { cpt++ ;}
 	}
 
-	struct noeud* T = malloc(cpt*2*sizeof(struct noeud)) ;
+	struct noeud* T = malloc(cpt*10*sizeof(struct noeud)) ;
 	//tableau pour chaque char different
 
 	for(int i=0 ; i<256 ; i++){

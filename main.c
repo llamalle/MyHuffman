@@ -18,8 +18,9 @@ int main(int argc , char** argv){
 
 //	codeChar('e' , arbre) ;
 	printf("%f",tailleMoyenne(arbre));
-	compression(argv[1] , arbre);
-	decompression(argv[2] , arbre , 3);
+	int g=compression(argv[1] , arbre);
+	printf("g vaut %d" , g);
+	decompression(argv[2] , arbre , g);
 	free(tabprob) ;
 
 	

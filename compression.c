@@ -3,6 +3,7 @@
 #include<unistd.h>
 #include<stdio.h>
 #include"codeChar.h"
+#include"afficheBin.h"
 
 int compression(char* text , struct noeud* arbre){
 
@@ -16,20 +17,19 @@ int compression(char* text , struct noeud* arbre){
 	if(fichier==NULL){ printf("fichier non ouvert\n"); return 1; }   //ajouter message d'erreur
 	int cursFinEcriture=0 ;
 
-	int a=0;
+	int a=fgetc(fichier);
 	while(a != EOF){
 		i=0;	
-		a=fgetc(fichier);
-		printf("%c\n" , a);
+//		printf("a vaut %c" , a);
 		while(codeChar(a,arbre)[i] != '\0'){
 			if(curs<0){
 				fwrite(&buffer,sizeof(char),1,file);
 				buffer=0;
 				curs=7;
-				printf("octet ecrit\n");
+//				printf("octet ecrit\n");
 			}
 			if(codeChar(a,arbre)[i]=='1'){
-				printf("bit change\n");
+//				printf("bit change\n");
 				buffer |= (char)pow(2,curs);
 			}
 			curs-- ;
@@ -37,7 +37,10 @@ int compression(char* text , struct noeud* arbre){
 			printf("curs : %d\n" , curs);
 			i++ ;
 		}
+		a=fgetc(fichier);
 	}
+//	affichebin((unsigned)buffer);
+	printf("/n");
 	fwrite(&buffer,sizeof(char),1,file);
 	fclose(fichier);
 	fclose(file);

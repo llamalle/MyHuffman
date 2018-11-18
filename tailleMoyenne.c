@@ -13,7 +13,7 @@ float tailleMoyenne (struct noeud * arbre) {
   int div = 0;
   for (int j = 0; j < i; j++) {
     if (arbre[j].c != 0) {
-      printf("%s -- %ld\n",codeChar(arbre[j].c,arbre),strlen(codeChar(arbre[j].c,arbre)));
+      printf("%c : %s -- %ld\n",arbre[j].c ,codeChar(arbre[j].c,arbre),strlen(codeChar(arbre[j].c,arbre)));
       somme += strlen(codeChar(arbre[j].c,arbre));
       div++;
     }
