@@ -20,7 +20,7 @@ int compression(char* text , struct noeud* arbre){
 	int a=fgetc(fichier);
 	while(a != EOF){
 		i=0;	
-//		printf("a vaut %c" , a);
+		printf("a vaut %c" , a);
 		while(codeChar(a,arbre)[i] != '\0'){
 			if(curs<0){
 				fwrite(&buffer,sizeof(char),1,file);
@@ -40,7 +40,9 @@ int compression(char* text , struct noeud* arbre){
 		a=fgetc(fichier);
 	}
 //	affichebin((unsigned)buffer);
-	printf("/n");
+	printf("\n le dernier buffer vaut");
+	affichebin(buffer);
+	printf("\n");
 	fwrite(&buffer,sizeof(char),1,file);
 	fclose(fichier);
 	fclose(file);

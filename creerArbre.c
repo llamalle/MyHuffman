@@ -45,23 +45,23 @@ struct noeud* creerArbre(float *tab){
 				i2 = k ;
 			}
 		}
-			//si le noeud a un pere on ne le compte plus
-			// prend les noeuds de prob minimum 
+		//si le noeud a un pere on ne le compte plus
+		// prend les noeuds de prob minimum 
 
-			if(min1.prob != 1 && min2.prob !=1) { 
-				T[j].c = '0';
-				T[j].pere = -1 ;
-				T[j].fd = i1 ;
-				T[j].fg = i2 ;
-				T[j].prob = min1.prob + min2.prob ;
-				j++ ;
+		if(min1.prob != 1 && min2.prob !=1) { 
+			T[j].c = '0';
+			T[j].pere = -1 ;
+			T[j].fd = i1 ;
+			T[j].fg = i2 ;
+			T[j].prob = min1.prob + min2.prob ;
+			j++ ;
 
-				T[i1].pere = j-1 ;
-				T[i2].pere = j-1 ;
-			}
-			// ajoute un noeud pere pour les 2 noeud fils de proba minimum 
+			T[i1].pere = j-1 ;
+			T[i2].pere = j-1 ;
+		}
+		// ajoute un noeud pere pour les 2 noeud fils de proba minimum 
 
-		}while((min1.prob!=1) && (min2.prob!=1)) ; //s'arrete s'il n'y a pas 2 noeuds sans pere
+	}while((min1.prob!=1) && (min2.prob!=1)) ; //s'arrete s'il n'y a pas 2 noeuds sans pere
 
 		return T ;
 	}
