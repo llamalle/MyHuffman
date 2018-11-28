@@ -20,7 +20,7 @@ int main(int argc , char** argv){
 	printf("%f",tailleMoyenne(arbre));
 	int g=compression(argv[1] , arbre);
 	printf("g vaut %d" , g);
-//	decompression(argv[2] , arbre , g);
+	decompression(argv[2] , g);
 	free(tabprob) ;
 
 	
