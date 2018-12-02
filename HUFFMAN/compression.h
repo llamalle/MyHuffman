@@ -2,6 +2,6 @@
 #define _COMP
 #include"creerArbre.h"
 
-int compression(char* text , struct noeud* arbre);
+void compression(char* text , char* cible , struct noeud* arbre);
 
 #endif

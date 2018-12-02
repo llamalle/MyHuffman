@@ -10,7 +10,7 @@ char * codeChar(char caractere, struct noeud * arbre) {
 	for (int a = i; arbre[a].pere != -1; a = arbre[a].pere) {
 		j++;
 	}
-	char * code = malloc((j)*sizeof(char));
+	char* code = malloc((j)*sizeof(char));
 	code[--j] = '\0';
 
 	for (int a = i; arbre[a].pere != -1; a = arbre[a].pere) {
