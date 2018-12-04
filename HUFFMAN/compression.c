@@ -4,9 +4,48 @@
 #include<stdio.h>
 #include"codeChar.h"
 #include<stdlib.h>
-#include"afficheBin.h"
 #include<stdint.h>
 #include<inttypes.h>
+
+void CopieDeb(uint32_t A , char* cible);
+
+void exception1(struct noeud* arbre, FILE* fichier , FILE* file, char* cible){
+	int i=0;
+	int a;
+	char buf=0;
+	uint32_t nbRep=0;
+
+	do{
+		printf("sale bite %c - %d\n",arbre[i].c,i);
+	}while (arbre[i].pere != -1) ;
+
+	i=0;
+	while(arbre[i].c == 0)
+		i++;
+
+	char buffer=arbre[i].c;
+	fwrite(&buffer,sizeof(char),1,file);
+
+	while((a=fgetc(fichier))!=EOF)
+		nbRep++;
+
+	for(int i=31; i>=0 ; i--){
+		if((nbRep & (uint32_t)pow(2,i))!=0)
+			buf |= (uint32_t)pow(2,i%8) ;
+		if(i%8==0){
+			printf("buffer vaut %d\n",buf);
+			fwrite(&buf,sizeof(char),1,file);
+			printf("u32 ecirt %d\n",buf);
+			buf=0;
+		}		
+	}
+	printf("%d\n",nbRep);
+
+	fclose(fichier);
+	fclose(file);
+	CopieDeb(0,cible);
+	return ;
+}
 
 void CopieDeb(uint32_t A , char* cible){
 	int c;
@@ -21,9 +60,10 @@ void CopieDeb(uint32_t A , char* cible){
 	for(int i=31; i>=0 ; i--){
 		if((A & (uint32_t)pow(2,i))!=0)
 			buf |= (uint32_t)pow(2,i%8) ;
-	        if(i%8==0){
+		if(i%8==0){
+			printf("buffer vaut %d\n",buf);
 			fwrite(&buf,sizeof(char),1,file);
-	       		buf=0;
+			buf=0;
 			printf("u32 ecirt\n");
 		}		
 	}
@@ -43,9 +83,7 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 	if(arbre[N.fg].c != 0){
 		*buffer |= (char)pow(2,*curs);
 		if(*curs<0){
-			printf("coucou\n");
 			fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
 			printf("\n");
 			*curs=7;
 			*buffer=0;
@@ -57,8 +95,7 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 		for(int p=7 ; p>=0 ; p--){
 			if(*curs<0){
 				fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
-			printf("\n");
+				printf("\n");
 				*curs=7;
 				*buffer=0;
 			}
@@ -74,7 +111,6 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 
 		if(*curs<0){
 			fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
 			printf("\n");
 			*curs=7;
 			*buffer=0;
@@ -88,7 +124,6 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 
 		if(*curs<0){
 			fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
 			printf("\n");
 			*curs=7;
 			*buffer=0;
@@ -101,8 +136,7 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 		for(int p=7 ; p>=0 ; p--){
 			if(*curs<0){
 				fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
-			printf("\n");
+				printf("\n");
 				*curs=7;
 				*buffer=0;	
 			}
@@ -119,7 +153,6 @@ void ecrireArbre(struct noeud N , struct noeud* arbre , FILE* fichierC , char* b
 
 		if(*curs<0){
 			fwrite(buffer,sizeof(char),1,fichierC);
-			affichebin(*buffer);
 			printf("\n");
 			*curs=7;
 			*buffer=0;
@@ -150,13 +183,27 @@ void compression(char* text , char* cible , struct noeud* arbre){
 	uint32_t* ptrcursFinEcriture=&cursFinEcriture;
 	char nbChar=0;
 
-	while(arbre[i].pere != -1){
-		if(arbre[i].c != 0)
-			nbChar++;
+
+	while(arbre[i].pere !=-1){
+		if(arbre[i].c != 0){
+			printf("char %c\n",arbre[i].c);
+			nbChar++;}
 		i++ ;
+	}
+	nbChar--;
+
+	printf("nbcara vaut %d\n",nbChar);
+
+	if(nbChar==-1){
+		nbChar++;
+		printf("nbchar vaut %d",nbChar);
+		fwrite(&nbChar,sizeof(char),1,file);
+		exception1(arbre,fichier,file,cible);
+		return;
 	}
 
 	fwrite(&nbChar,sizeof(char),1,file);
+
 	cursFinEcriture+=8;
 	struct noeud noeudCourant=arbre[i] ;
 
@@ -186,6 +233,7 @@ void compression(char* text , char* cible , struct noeud* arbre){
 	fclose(fichier);
 	fclose(file);
 	CopieDeb(cursFinEcriture,cible);
+	printf("cursFinEcriture vaut %d\n",cursFinEcriture);
 	return  ;
 }
 

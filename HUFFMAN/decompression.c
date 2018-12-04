@@ -1,10 +1,33 @@
 #include"decompression.h"           //il faut declarer le tableau et le renvoyer
 #include<math.h>
 #include<stdio.h>
-#include"afficheBin.h"
 #include<stdlib.h>
 #include "codeChar.h"
 #include<stdint.h>
+#include<inttypes.h>
+
+void Exception1(FILE* fichier, FILE* decomp){
+	int a=fgetc(fichier);
+	char caca=a;
+	a=fgetc(fichier);
+	uint32_t cursFin=0;
+	for(int i=31 ; i>=0 ; i--){
+		printf("a vaut %d\n",a);
+		if((a & (char)pow(2,i%8))!=0){
+			cursFin |= (uint32_t)pow(2,i);
+	}
+		if(i%8==0){
+			a=fgetc(fichier);
+	}
+	}
+	
+	for(int i=0 ; i<(int)cursFin ; i++){
+		printf("%d %d\n",i,(int)cursFin);
+		fwrite(&caca,sizeof(char),1,decomp);
+	}
+	fclose(fichier);
+	fclose(decomp);
+}
 
 uint32_t lireCursFin(FILE* fichier, int* a){
 	uint32_t cursFin=0;
@@ -13,7 +36,9 @@ uint32_t lireCursFin(FILE* fichier, int* a){
 			cursFin |= (uint32_t)pow(2,i);
 		if(i%8==0)
 			*a=fgetc(fichier);
+		printf("curs fin vaut %d\n",cursFin);
 	}
+	printf("cursfin vaut%" PRIu32 "\n",cursFin);
 	return cursFin ;
 }
 
@@ -26,8 +51,8 @@ int trouve(struct noeud* T){
 	return i ;
 }
 
-void lireArbre(FILE* file , FILE* decomp, int* a, int* curs, char *nbChar,int* nbBitEcrit,struct noeud* T,int node){
-	if(*nbChar==0)
+void lireArbre(FILE* file , FILE* decomp, int* a, int* curs, char* nbChar,int* nbBitEcrit,struct noeud* T,int node){
+	if(*nbChar==-1)
 		return ;
 
 	char caractere=0;
@@ -119,21 +144,30 @@ void decompression(char* text, char* cible ){
 	int curs=6;
 	int* ptrcurs=&curs;
 	char nbchar=a;
-	printf("nbchar vaut %d\n",a);
+	
+	if(nbchar==0){
+		Exception1(fichier,decomp);
+		
+		return ;
+	}
+
+	printf("nbchar vaut %d\n",nbchar);
 	char* ptrnbchar=&nbchar;
 	a=fgetc(fichier);
 	int nbBitEcrit=9;
 	int* ptrnbBit=&nbBitEcrit;
 	char q ;
-	struct noeud* arbre = malloc((int)nbchar*10*sizeof(struct noeud));
+	printf("nbCHar vaut %d\n" ,nbchar);
+	struct noeud* arbre = malloc((int)(nbchar+1)*10*sizeof(struct noeud));
 	for(int i=1 ; i<nbchar*10 ; i++)
 		arbre[i].pere=-2;
 
 	arbre[0].pere=-1;
 	if(fichier==NULL){printf("impossible d'ouvrir le fichier"); return ;}
-
+	if(decomp==NULL){printf("impossible d'ouvrir le fichier"); return ;}
+	
 	lireArbre(fichier,decomp,ptra,ptrcurs,ptrnbchar,ptrnbBit,arbre,0);
-	printf("bit ecrit vaut %d\n",nbBitEcrit);
+//	printf("bit ecrit vaut %d\n",nbBitEcrit);
 	for(int i=0 ; i<10 ; i++){
 		q=arbre[i].c;
 		printf("%d. char %c ,pere %d, fg %d codechar %s\n",i,q,arbre[i].pere,arbre[i].fg,codeChar(q,arbre));
