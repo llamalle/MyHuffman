@@ -16,4 +16,7 @@ def parcours(repertoire):
             parcours(os.path.join(repertoire,f))
 
 
-parcours(sys.argv[1])
+
+os.system('cp -R '+sys.argv[1]+' '+sys.argv[2])
+parcours(sys.argv[2])
+

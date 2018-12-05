@@ -51,12 +51,9 @@ int trouve(struct noeud* T){
 	return i ;
 }
 
-void lireArbre(FILE* file , FILE* decomp, int* a, int* curs,unsigned char* nbChar,int* nbBitEcrit,struct noeud* T,int node,int* ver){
-	printf("nbchar vaut %c\n",*nbChar);
-	if(*ver==1)
-		return ;
+void lireArbre(FILE* file , FILE* decomp, int* a, int* curs,unsigned char* nbChar,int* nbBitEcrit,struct noeud* T,int node){
 	if(*nbChar==0)
-		*ver=1;
+		return ;
 
 	char caractere=0;
 
@@ -127,9 +124,9 @@ void lireArbre(FILE* file , FILE* decomp, int* a, int* curs,unsigned char* nbCha
 	else{*curs=*curs-1; *nbBitEcrit=*nbBitEcrit+1;}
 
 	if(recursG)
-		lireArbre(file,decomp,a,curs,nbChar,nbBitEcrit,T,T[node].fg,ver);
+		lireArbre(file,decomp,a,curs,nbChar,nbBitEcrit,T,T[node].fg);
 	if(recursD)
-		lireArbre(file,decomp,a,curs,nbChar,nbBitEcrit,T,T[node].fd,ver);
+		lireArbre(file,decomp,a,curs,nbChar,nbBitEcrit,T,T[node].fd);
 
 
 }
@@ -152,16 +149,12 @@ void decompression(char* text, char* cible ){
 	int* ptrcurs=&curs;
 	unsigned char nbchar=a;
 	unsigned char nbcarac=nbchar;
-	int pres=1;
-	int ver=0;
-	int* ptrver=&ver;
 
 	if(nbchar==0){
 		Exception1(fichier,decomp);
 		
 		return ;
 	}
-	/* si nbChar vaut 0 il y a 1 caractere different */
 
 	printf("nbchar vaut %d\n",nbchar);
 	unsigned char* ptrnbchar=&nbchar;
@@ -178,7 +171,7 @@ void decompression(char* text, char* cible ){
 	if(fichier==NULL){printf("impossible d'ouvrir le fichier"); return ;}
 	if(decomp==NULL){printf("impossible d'ouvrir le fichier"); return ;}
 	
-	lireArbre(fichier,decomp,ptra,ptrcurs,ptrnbchar,ptrnbBit,arbre,0,ptrver);
+	lireArbre(fichier,decomp,ptra,ptrcurs,ptrnbchar,ptrnbBit,arbre,0);
 //	printf("bit ecrit vaut %d\n",nbBitEcrit);
 //	for(int i=0 ; i<10 ; i++){
 //		q=arbre[i].c;
@@ -189,7 +182,7 @@ void decompression(char* text, char* cible ){
 		j++;
 	struct noeud noeudCourant=arbre[j];
 	char d=noeudCourant.c;
-	while(pres != 0){
+	while(a!=EOF){
 		noeudCourant=arbre[j];
 		d=noeudCourant.c;
 		while((noeudCourant.fd != -1) || (noeudCourant.fg != -1)){
@@ -205,17 +198,14 @@ void decompression(char* text, char* cible ){
 				d=noeudCourant.c;}
 			curs--;
 			nbBitEcrit++;
-			printf("nbBItEcrit vaut %d\n",cursComp);
-			if(nbBitEcrit>cursComp){
+			if(nbBitEcrit==cursComp){
 				noeudCourant.fd=-1 ;
 				noeudCourant.fg=-1;	
-				pres=0;
+				a=EOF;
 			}
 
-		}
-		if(pres != 0){	
+		}	
 		fwrite(&d,sizeof(char),1,decomp);
-		printf("this is a test\n");}
 	}
 	fclose(fichier);
 	fclose(decomp);

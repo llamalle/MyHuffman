@@ -5,7 +5,7 @@
 float* proba(char* txt){
 	
 	float* T = malloc(256*sizeof(float)) ;
-	int a;
+	unsigned int a;
 	FILE* fichier=NULL ;
 	fichier = fopen( txt  , "r+") ;  //ouvre le fichier passé en arg
 	int i=0 ;
